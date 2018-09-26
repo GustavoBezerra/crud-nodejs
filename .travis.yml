@@ -1,13 +1,9 @@
 language: node_js
-
 node_js:
-  - '8.11.3'
-
-  cache:
-  yarn: true
+  - "8"
+cache:
   directories:
-    - node_modules
-
+    - "node_modules"
 #script:
   #- yarn test #if exist any test
   #- bash ./deploy.sh #If you want deploy application anywhere
