@@ -22,4 +22,17 @@ router.post('/new', function(req, res){
   });
 });
 
+router.get('/upload', function(req, res){
+  res.render('upload', { title: 'Upload de Arquivos' });
+});
+
+router.post('/upload', function(req, res, next){
+  var formidable = require('formidable');
+  var form = new formidable.IncomingForm();
+    form.parse(req, function (err, fields, files) {
+      res.write('File uploaded - '+files.filetoupload.path);
+      res.end();
+    });
+});
+
 module.exports = router;
