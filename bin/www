@@ -3,8 +3,8 @@
 /**
  * Module dependencies.
  */
-global.db = require('../db');
 var app = require('../app');
+global.db = require('../db');
 var debug = require('debug')('vilt-application-test:server');
 var http = require('http');
 
