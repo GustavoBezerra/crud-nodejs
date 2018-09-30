@@ -1,6 +1,6 @@
-const passport = require('passport');
-const session = require('express-session');
-const MongoStore = require('connect-mongo')(session);
+const passport = require('passport')
+const session = require('express-session')
+const MongoStore = require('connect-mongo')(session)
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -15,6 +15,20 @@ var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+app.use( express.static( "public" ) );
+
+require('./auth')(passport);
+app.use(session({  
+  store: new MongoStore({
+    db: global.db,
+    ttl: 30 * 60 // = 30 minutos de sessão
+  }),
+  secret: '123',//configure um segredo seu aqui
+  resave: false,
+  saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -40,18 +54,5 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
-require('./auth')(passport);
-app.use(session({  
-  store: new MongoStore({
-    db: global.db,
-    ttl: 30 * 60 // = 30 minutos de sessão
-  }),
-  secret: '123',//configure um segredo seu aqui
-  resave: false,
-  saveUninitialized: false
-}))
-app.use(passport.initialize());
-app.use(passport.session());
 
 module.exports = app;
