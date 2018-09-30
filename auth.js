@@ -1,6 +1,12 @@
 const bcrypt = require('bcryptjs');
 const LocalStrategy = require('passport-local').Strategy;
 
+function findUser(username, callback){
+    global.conn.collection("users").findOne({"username":username}, function (err, doc){
+        callback(err, doc);
+    });
+}
+
 module.exports = function(passport){
     //configuraremos o passport aqui
     passport.serializeUser(function(user, done){
